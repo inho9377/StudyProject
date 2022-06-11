@@ -5,10 +5,12 @@ const data = fs.readFileSync('Elixir-quiz/input-part2.txt').toString();
 const dataList = data.trim().split('\n');
 
 let retVal = null;
+
 dataList.forEach((value) => {
     const find = dataList.find((value_in, index_in) => {
         return getSameCount(value_in, value) === (value_in.length-1)
     });
+    
     if(find) {
         console.log(`Find! ${find}`)
         const chList = find.split('');
