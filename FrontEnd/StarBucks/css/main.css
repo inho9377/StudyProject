@@ -18,6 +18,57 @@ a {
     margin: 0 auto; /*가운데 정렬*/
     position: relative;
 }
+.btn {
+    width: 130px;
+    padding: 10px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    color: #333;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: block;
+    transition: .4s;
+}
+.btn:hover {
+    background-color: #333;
+    color: #fff;
+}
+.btn.btn--reverse {
+    background-color: #333;
+    color: #fff;
+}
+.btn.btn--reverse:hover {
+    background-color: transparent;
+    color: #333;
+}
+.btn.btn--brown {
+    color:#592B18;
+    border-color: #592B18;
+}
+.btn.btn--brown:hover {
+    color:#fff;
+    background-color: #592B18;
+}
+.btn.btn--gold {
+    color: #d9aa8a;;
+    border-color: #d9aa8a;
+}
+.btn.btn--gold:hover {
+    color:#fff;
+    background-color: #d9aa8a;
+}
+.btn.btn--white {
+    color: #FFF;;
+    border-color: #FFF;
+}
+.btn.btn--white:hover {
+    color:#333;
+    background-color: #FFF;
+}
+
 
 
 /* HEADER */
@@ -28,6 +79,7 @@ header  {
     position: fixed; /*fixed absolute는 가로너비가 줄어들려고 함*/
     top: 0;
     width: 100%; /*auto 면 가로 길이 줄어듬*/
+    z-index: 9;
 }
 
 /*header 의 자식인 inner 만 120px*/
@@ -227,3 +279,263 @@ header .badges .badge {
     box-shadow: 4px 4px 10px rgba(0, 0, 0, .15);
     cursor: pointer;
 }
+
+
+/* VISUAL */
+.visual {
+    margin-top: 120px; /*HEADER 의 높이값*/
+    background-image: url("../images/visual_bg.jpg");
+    background-position: center;
+}
+
+.visual .inner{
+    height: 646px;
+}
+
+/* 너무 길어지니 .inner 생략. inner는 가운데로 몰아주는 역할만 하니까 */
+.visual .title{
+    position: absolute;
+    top: 88px;
+    left: -10px;
+}
+
+/* .title 기준으로 버튼 위치 .title 움직이면 같이 움직임*/
+.visual .title .btn{
+    position: absolute;
+    top: 259px;
+    left: 173px;
+}
+
+.visual .cup1.image {
+    position: absolute;
+    bottom: 0;
+    right: -47px;
+}
+.visual .cup1.text {
+    position: absolute;
+    bottom: 38px;
+    right: 171px;
+    
+}
+.visual .cup2.image {
+    position: absolute;
+    bottom: 0;
+    right: 162px;
+    
+}
+.visual .cup2.text {
+    position: absolute;
+    bottom: 321px;
+    right: 416px;
+    
+}
+.visual .spoon {
+    position: absolute;
+    bottom: 0;
+    right: 275px;
+}
+.visual .fade-in {
+    opacity: 0;
+}
+
+/* NOTICE */
+.notice {
+
+}
+.notice .notice-line {
+  position: relative;
+}
+.notice .notice-line .bg-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #333;
+}
+.notice .notice-line .bg-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #f6f5ef;
+}
+.notice .notice-line .inner {
+    height: 62px; /*높이 자체가 알아서 제어됨. %써서. 항상 상호작용 가능한 구조로 작성할 것*/
+    display: flex; /* inner 내부 부분이 수평이 되어야 함 */
+}
+.notice .notice-line .inner__left {
+  width: 60%;
+  height: 100%;
+  background-color: #333;
+  display: flex;
+  align-items: center;
+}
+.notice .notice-line .inner__left h2 {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  margin-right: 20px;
+}
+.notice .notice-line .inner__left .swiper-container {
+  height: 62px;
+  flex-grow: 1;
+}
+.notice .notice-line .inner__left .swiper-slide {
+  height: 62px;
+  display: flex;
+  align-items: center;
+}
+.notice .notice-line .inner__left .swiper-slide a {
+  color: #fff;
+}
+
+/*+ 아이콘을 중앙으로*/
+.notice .notice-line .inner__left .notice-line__more {
+  width: 62px;
+  height: 62px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.notice .notice-line .inner__left .notice-line__more .material-icons {
+ color: #fff;
+ font-size: 30px;
+}
+.notice .notice-line .inner__right {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end; /*수평 정렬 오른쪽 정렬*/
+  align-items: center; /*수직 정렬 가운데로*/
+}
+.notice .notice-line .inner__right h2 {
+  font-size: 17px;
+  font-weight: 700;
+}
+.notice .notice-line .inner__right .toggle-promotion {
+  width: 62px;
+  height: 62px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.notice .notice-line .inner__right .toggle-promotion .material-icons {
+  font-size: 30px;
+}
+.notice .notice-line .inner__right {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end; /*수평 정렬 오른쪽 정렬*/
+    align-items: center; /*수직 정렬 가운데로*/
+}
+
+.notice .notice-line .inner__right h2{
+    font-size: 17px;
+    font-weight: 700;
+}
+.notice .notice-line .inner__right .toggle-promotion{
+    width: 62px;
+    height: 62px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.notice .notice-line .inner__right .toggle-promotion .material-icons{
+    font-size: 30px;
+}
+.notice .promotion {
+    height: 693px;
+    background-color: #f6f5ef;
+    position: relative;
+    transition: height .4s;
+    overflow: hidden;
+  }
+
+  
+  /*띄어쓰기 없이 promotion 클래스에 hide가 바로 붙어있는 경우 지정(일치 선택자)*/
+  .notice .promotion.hide {
+   height: 0;
+  }
+  .notice .promotion .swiper-container {
+    width: calc(819px * 3 + 20px);
+    /* width: calc(100% - 50px); */
+    height: 553px;
+    position: absolute;
+    top: 40px;
+    left: 50%; /*가운데로 위치하게 함. 우선 오른쪽 끝에 붙도록*/
+    margin-left: calc((819px * 3 + 20px) / -2); /*가로너비의 절반. 왼쪽으로 땡김(-). 확대/축소 등 해도 가운데로 위치하게 함*/
+  }
+  .notice .promotion .swiper-slide {
+    opacity: .5;
+    transition: opacity 1s;
+    position: relative;
+  }
+  .notice .promotion .swiper-slide-active {
+    opacity: 1;
+  }
+  .notice .promotion .swiper-slide .btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+  .notice .promotion .swiper-pagination { /* 이미 기본 스타일의 포지션 값이 들어가 있음 */
+    bottom: 40px;
+    left: 0;
+    right: 0;
+  }
+  .notice .promotion .swiper-pagination .swiper-pagination-bullet { /* 개발자 도구로 확인한 선택자 */
+    background-color: transparent; /*이미지만 사용. 기존에 디폴트로 되어있던 색상 무시*/
+    background-image: url("../images/promotion_slide_pager.png");
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    outline: none;
+  }
+  /*가장 마지막 요소에는 여백 없음*/
+  .notice .promotion .swiper-pagination .swiper-pagination-bullet:last-child {
+    margin-right: 0;
+  }
+  .notice .promotion .swiper-pagination .swiper-pagination-bullet-active {
+    background-image: url("../images/promotion_slide_pager_on.png");
+  }
+
+  /* 다중 선택자 */
+  .notice .promotion .swiper-prev,
+  .notice .promotion .swiper-next {
+    width: 42px;
+    height: 42px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    position: absolute;
+    top: 300px;
+    z-index: 1;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+
+    /*화살표를 가운데로*/
+    justify-content: center;
+    align-items: center;
+
+    transition: .4s;
+  }
+  .notice .promotion .swiper-prev {
+    left: 50%;
+    margin-left: -480px;
+  }
+  .notice .promotion .swiper-next {
+    right: 50%;
+    margin-right: -480px;
+  }
+  .notice .promotion .swiper-prev:hover,
+  .notice .promotion .swiper-next:hover {
+    background-color: #333;
+    color: #fff;
+  }
