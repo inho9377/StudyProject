@@ -456,7 +456,7 @@ header .badges .badge {
     overflow: hidden;
   }
 
-  
+
   /*띄어쓰기 없이 promotion 클래스에 hide가 바로 붙어있는 경우 지정(일치 선택자)*/
   .notice .promotion.hide {
    height: 0;
@@ -539,3 +539,115 @@ header .badges .badge {
     background-color: #333;
     color: #fff;
   }
+
+  .rewards {
+    position: relative;
+  }
+  .rewards .bg-left {
+    width: 50%;
+    height: 100%;
+    background-color: #272727;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .rewards .bg-right {
+    width: 50%;
+    height: 100%;
+    background-color: #d5c798;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .rewards .inner {
+    background-image: url("../images/rewards.jpg");
+    height: 241px;
+  }
+
+  .rewards .btn-group {
+    position: absolute; /*.inner 가 위치상 부모*/
+    bottom: 24px;
+    right: 0;
+    width: 250px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .rewards .btn-group .btn.sign-up{
+    margin-right: 10px;
+    }   
+
+.rewards .btn-group .btn.sign-in {
+    width: 110px;
+}
+
+.rewards .btn-group .btn.gift{
+    margin-top: 10px;
+    flex-grow: 1; /*최대한의 너비*/
+}
+
+/* YOUTUBE VIDEO */
+.youtube {
+    position: relative;
+    height: 700px;
+    background-color: #333;
+    overflow: hidden;
+}
+.youtube .youtube__area {
+    width: 1920px;
+    background-color: orange;
+    position: absolute;
+    left: 50%; /*정 가운데 기준으로 왼쪽에 배치 50% 크기로*/
+    margin-left: calc(1920px / -2); /* 가운데로 땡겨오기 */
+    top: 50%;
+    margin-top: calc(1920px * 9 / 16 / -2); /* 16:9 비율 */
+}
+
+/*스타일을 위한 인라인 요소 추가*/
+.youtube .youtube__area::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 0;
+    padding-top: 56.25%;
+}
+.youtube .youtube__cover {
+    background-image: url("../images/video_cover_pattern.png");
+    background-color: rgba(0,0,0,.3);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#player {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.youtube .inner {
+    height: 700px;
+}
+
+.youtube .floating1 {
+    position: absolute;
+    top: 50px;
+    left: 0;
+}
+
+.youtube .floating2 {
+    position: absolute;
+    top: 350px;
+    left: 150px;
+}
+
+.youtube .floating3 {
+    position: absolute;
+    bottom: -200px;
+    right: 0;
+}
