@@ -136,5 +136,11 @@ floatingObject('.floating3', 1.5, 20);
 
 const spyEls = document.querySelectorAll('section.scroll-spy');
 spyEls.forEach(function(spyEl) {
-  new ScrollMagic.Scene().setClassToggle().addTo();
+  new ScrollMagic
+    .Scene({
+      triggerElement: spyEl, // 보여짐 여부를 감시할 요소를 지정
+      triggerHook : .8, // 0~1 사이.(1이 맨 아래)
+    })
+    .setClassToggle(spyEl, 'show') // Hook에 의해 실행되는 메소드. show 라는 클래스를 넣고 뺌
+    .addTo(new ScrollMagic.Controller());
 });  
