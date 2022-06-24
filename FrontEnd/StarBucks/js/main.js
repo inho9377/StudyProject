@@ -20,6 +20,7 @@ searchInputEl.addEventListener('blur', function () {
 })
 
 const badgeEl = document.querySelector('header .badges');
+const toTopEl = document.querySelector('#to-top');
 //window 객체는 브라우저 창 (탭 하나)
 window.addEventListener('scroll', _.throttle(function () {
     console.log(window.scrollY);
@@ -33,6 +34,11 @@ window.addEventListener('scroll', _.throttle(function () {
 
             display: 'none'
         });
+        // 버튼 보이기
+        gsap.to(toTopEl, .2, {
+          x: 0
+        });
+
     }
     else {
         // 배지 보이기
@@ -41,9 +47,19 @@ window.addEventListener('scroll', _.throttle(function () {
             opacity: 1,
             display: 'block'
         });
+        // 버튼 숨기기
+        gsap.to(toTopEl, .2, {
+          x: 100
+        });
     }  
 }, 300 /* 0.3s */));
 // _.throttle(함수, 시간(ms))
+
+toTopEl.addEventListener('click', function() {
+  gsap.to(window, .7, {
+    scrollTo: 0
+  });
+});
 
 
 const fadeEls = document.querySelectorAll('.visual .fade-in');
@@ -144,3 +160,7 @@ spyEls.forEach(function(spyEl) {
     .setClassToggle(spyEl, 'show') // Hook에 의해 실행되는 메소드. show 라는 클래스를 넣고 뺌
     .addTo(new ScrollMagic.Controller());
 });  
+
+
+const thisYear = document.querySelector('.this-year');
+thisYear.textContent = new Date().getFullYear();
