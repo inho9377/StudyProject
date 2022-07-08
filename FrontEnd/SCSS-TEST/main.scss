@@ -1,0 +1,263 @@
+@import "./sub", "./sub2.scss";
+
+$color: royalblue;
+.container {
+    h1 {
+        color: $color;
+    }
+}
+
+
+
+
+
+
+
+
+
+.container {
+	h1 {
+		color: royalblue;
+		/* background-color: orange; */
+		// font-size: 60px
+	}
+}
+
+
+.container {
+    ul {
+        li {
+            font-size: 40px;
+            .name {
+                color: royalblue;
+            }
+            .age {
+                color: orange;
+            }
+        }
+    }
+}
+
+
+
+.btn {
+    position: absolute;
+    &.active { // &가 상위 선택자 참조.  & 이 있는 범위에 있는 선택자
+        color: red;
+    }
+}
+
+.list {
+    li {
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
+.fs {
+    &-small { font-size: 12px; }
+    &-medium { font-size: 14px; }
+    &-large { font-size: 16px; }
+}
+
+.box {
+    font: {
+        weight: bold;
+        size: 10px;
+        family: sans-serif;
+    };
+
+    margin: {
+        top: 10px;
+        left: 20px
+    };
+
+    padding: {
+        top: 10px;
+        bottom: 40px;
+        left: 20px;
+        right: 30px;
+    };
+}
+
+
+$size: 100px; // 전역 변수
+
+.container {
+    $size: 200px; // 선언된 중괄호 안에서만 사용 가능
+    position: fixed;
+    top: $size; //200
+    .item {
+        $size: 100px;
+        width: $size; //100
+        height: $size; //100
+        transform: translateX($size); //100
+    }
+    left: $size; //200
+}
+
+div {
+    width: 20px + 20px;
+    height: 40px - 10px;
+    font-size: 10px * 2;
+    margin: 30px / 2; // 나누기는 제대로 출력 안 됨. 단축 속성 때문에
+    //margin: (30px / 2);
+    //margin: $size / 2;
+    //margin: (10px + 12px) / 2;
+    padding: 20px % 7;
+}
+
+span {
+    font-size: 10px;
+    line-height: 10px;
+    font-family: serif;
+    font: 10px / 10px serif; //단축 속성
+}
+
+div {
+    //width: 100% - 200px; //단위 동일해야함
+    width: calc(100% - 200px); //표준 CSS에서 다른 단위간 연산 가능
+}
+
+.container {
+    width: 200px;
+    height: 200px;
+    background-color: ornage;
+    display: flex;
+    justify-content: center; //가운데 정렬
+    align-items: center; //가운데 정렬
+}
+
+.container .item {
+    width:  100px;
+}
+
+@mixin center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    @include center;
+    .item {
+        @include center;
+    }
+}
+
+.box {
+    @include center
+}
+
+@mixin box($size: 100px, $color: tomato) {
+    width:  $size;
+    height: $size;
+    background-color: $color;
+}
+
+.container {
+    @include box(200px, red);
+    .item {
+        @include box($color: green); //키워드 인수
+    }
+}
+
+.box {
+    @include box;
+}
+
+//i == index 의 약어
+//for (let i = 0; i < 10; i += 1
+//1 부터 시작함. 아래는 동일하게 10번 반복
+@for $i from 1 through 10 { 
+    //보간 필요
+    // JS의 $와 유사
+    .box:nth-child(#{$i}) { //선택자 (값을 적는 부분이 아님) 에는 보간 필요
+        width: 100px * $i;
+    }
+}
+
+.box {
+    $color: royalblue;
+    width: 200px;
+    height: 200px;
+    margin: 20px;
+    border-radius: 10px;
+    background-color: $color;
+    &.build-in {
+        background-color: mix($color, red); //색상을 섞음
+        background-color: lighten($color, 10%); //밝게
+        background-color: darken($color, 10%); //어둡게. 
+
+        background-color: saturate($color, 40%); //채도 증가.  
+        background-color: desaturate($color, 40%); //채도 감소.
+        
+        background-color: grayscale($color); //회색조
+
+        background-color: invert($color); //색상 반전
+
+        background-color: rgba($color, .5); //색상, 투명도. 표준 CSS는 rgba(0,0,0,.5) 처럼 사용 (인수 갯수가 다름)
+
+
+    }
+    &:hover {
+        background-color: darken($color, 10%); //어둡게.   
+    }
+}
+
+
+
+$number: 1; //.5, 100px, lem
+$string: bold; //relative, "../images/a.png"
+$color: red; //blue, #FFFF00, rgba(0,0,0,.1)  <- blue 등은 string이 아닌 color임을 유의
+$boolean: true; //false
+$null: null;
+$list: orange, royalblue, yellow; // 배열과 유사
+$map: ( //객체와 유사
+    o: orange,
+    r: royalblue,
+    y: yellow
+);
+
+.box {
+    width: 100px;
+    color: red;
+    position: null; // 컴파일 시 CSS에서 해당 속성 출력되지 않음
+}
+
+@each $c in $list {
+    .box {
+        color: $c;
+    }
+}
+
+//key, value
+@each $k, $v in $map {
+    .box-#{$k} {
+        color: $v;
+    }
+}
+
+@mixin left-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    @content
+}
+
+.container {
+    width: 100px;
+    height: 100px;
+    @include left-top;
+}
+
+.box {
+    width: 200px;
+    height: 300px;
+    @include left-top {
+        bottom: 0;
+        right: 0;
+        margin: auto;
+    }
+}

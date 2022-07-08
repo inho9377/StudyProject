@@ -255,3 +255,123 @@ console.log(heropy.getFullName()) // 메소느가 해당 함수를 '참조'함
 
 const heropy = {} // 리터럴 : 기호를 사용해 바로 데이터를 생성함 ("A"도 동일)
 
+
+
+//this
+//일반 함수 : 호출 위치에 따라 this 정의
+//화살표 함수 : 자신이 선언된 함수 범위에서 this 정의
+
+const heropy = {
+    name: 'Heropy',
+    normal: function() {
+        console.log(this.name) //Heropy. 호출 위치(객체)
+    },
+    arrow: () => {
+        console.log(this.name) //undefined
+    }
+}
+
+
+
+const amy = {
+    name: 'Amy',
+    normal: heropy.normal, //Amy
+    arrow: heropy.arrow //undefined
+}
+
+amy.normal()
+amy.arrow()
+
+function User(name) {
+    this.name = name
+}
+
+User.prototype.normal = function () {
+    console.log(this.name)
+}
+
+User.prototype.arrow = () => {
+    console.log(this.name)
+}
+
+const heropy = new User('Heropy')
+
+heropy.normal() //Heropy
+heropy.arrow() //undefined
+
+const timer = {
+    name: 'Heropy!'
+    timeout: function () {
+        setTimeout(function() {
+            console.log(this.name) //undefined
+            //setTimeout에서 사용
+        }, 2000)
+    }
+    timeout2: () => {
+        setTimeout(function() {
+            console.log(this.name) //Heropy. 여기서 this는 timer.
+        }, 2000)
+    }
+}
+
+timer.timeout()
+
+
+
+//ES6 Classes
+
+const heropy = {
+    name: 'Heropy',
+    normal() { //function 생략 가능
+        console.log(this.name) 
+    },
+    arrow: () => {
+        console.log(this.name) 
+    }
+}
+
+
+class User {
+    constructor(first, last) {
+        this.firstName = first
+        this.lastName = last
+    }
+ 
+    getFullName() {
+        return this.firstName
+    }
+}
+const heropy /*인스턴스*/ = new User('Heropy', 'Park')
+const amy = new User('Amy', 'Clarke')
+const neo = new User('Neo', 'Smith')
+
+console.log(heropy.getFullName()) // 메소느가 해당 함수를 '참조'함
+
+
+class Vehicle {
+    constructor(name, wheel) {
+        this.name = name
+        this.wheel = wheel
+    }
+}
+const myVehicle = new Vehicle('운송수단', 2)
+
+class Bicycle extends Vehicle {
+    constructor(name, wheel) {
+        super(name, wheel) //Vehicle 실행
+    }
+}
+const myBicycle = new Bicycle('삼천리', 2)
+const daugthersBicycle = new Bicycle('세발', 3)
+
+class Car extends Vehicle {
+    constructor(name, wheel, license) {
+        super(name, wheel)
+        this.license = license
+    }
+}
+const myCar = new Car('벤츠', 4, true)
+const daugthersCar = new Car('포르쉐', 4, false)
+
+
+

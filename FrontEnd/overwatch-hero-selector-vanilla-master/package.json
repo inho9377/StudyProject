@@ -1,0 +1,15 @@
+{
+  "name": "overwatch-hero-selector-vanilla-master",
+  "version": "1.0.0",
+  "description": "오버워치 영웅 선택 화면 예제!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "parcel-bundler": "^1.12.5"
+  }
+}
