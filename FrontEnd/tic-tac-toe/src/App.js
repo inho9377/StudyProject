@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './logo.svg'; //로고를 직접 사용
 import './App.css';
 
 function App() {

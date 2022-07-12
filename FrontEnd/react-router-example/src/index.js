@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css'; //css 스타일 파일을 전역적으로 추가
+import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-// main
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
