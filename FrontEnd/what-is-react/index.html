@@ -41,7 +41,6 @@
     ></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-
     <script type="text/babel">
       console.log(React)
       console.log(ReactDOM)
@@ -187,128 +186,260 @@
       //     document.querySelector('#root')
       // )
 
-    //     // 우리가 작성한 어떤 코드 => 순수하게 실행할 수 있는 자바스크립트
-    //     // babel (현재 브라우저가 이해할 수 있는 JS 문법으로 변환해줌)
-    //   ReactDOM.render(
-    //     //{a: "a"}. JSX 가 변환하여 두번째 인자로 들어감
-    //     <div a="a">
-    //       <div>
-    //         <h1>{"주제"}</h1>
-    //         <ul>
-    //           <li>React</li>
-    //           <li>Vue</li>
-    //         </ul>
-    //       </div>
-    //     </div>   
-    //     ,
-    //     document.querySelector('#root'),
-    //   )
+      //     // 우리가 작성한 어떤 코드 => 순수하게 실행할 수 있는 자바스크립트
+      //     // babel (현재 브라우저가 이해할 수 있는 JS 문법으로 변환해줌)
+      //   ReactDOM.render(
+      //     //{a: "a"}. JSX 가 변환하여 두번째 인자로 들어감
+      //     <div a="a">
+      //       <div>
+      //         <h1>{"주제"}</h1>
+      //         <ul>
+      //           <li>React</li>
+      //           <li>Vue</li>
+      //         </ul>
+      //       </div>
+      //     </div>
+      //     ,
+      //     document.querySelector('#root'),
+      //   )
 
-    // {message: '안녕하세여!'}. message 값이 바뀌면 다시 그려짐(render)
-    // function Component(props /*객체*/) {
-    //     return 
-    //         <div> 
-    //             <h1>{props.message} 이것은 함수로 만든 컴포넌트 입니다.</h1> 
-    //         </div>
-    // }
+      // {message: '안녕하세여!'}. message 값이 바뀌면 다시 그려짐(render)
+      // function Component(props /*객체*/) {
+      //     return
+      //         <div>
+      //             <h1>{props.message} 이것은 함수로 만든 컴포넌트 입니다.</h1>
+      //         </div>
+      // }
 
-    // Component.defaultProps = {
-    //     message: '기본값'
-    // }
+      // Component.defaultProps = {
+      //     message: '기본값'
+      // }
 
-    class Component extends React.Component {
-        state = { //state 는 항상 객체
-            count: 0,
-        };
+      class Component extends React.Component {
+        state = {
+          //state 는 항상 객체
+          count: 0,
+        }
 
         constructor(props) {
-            super(props); // React.Component의 생성자 호출
+          super(props) // React.Component의 생성자 호출
 
-            this.state = {count: 0} //정의 방법 2.
+          this.state = { count: 0 } //정의 방법 2.
         }
 
         render() {
-            return 
-                <div> 
-                    <h1>{this.props.message} 이것은 클래스로 만든 컴포넌트 입니다.</h1> 
-                    <p> {this.state.count}</p>
-                </div>
+          return
+          ;<div>
+            <h1>{this.props.message} 이것은 클래스로 만든 컴포넌트 입니다.</h1>
+            <p> {this.state.count}</p>
+          </div>
         }
 
-    // 동작하지 않음.
-    // State 변경시
-    componentDidMount() {
-        setTimeout(() => {
+        // 동작하지 않음.
+        // State 변경시
+        componentDidMount() {
+          setTimeout(() => {
             this.setState({
-                count: this.state.count + 1,
+              count: this.state.count + 1,
             })
             this.setState((previousState) => {
-                const newState = {count: previousState.count + 1};
-                return newState
+              const newState = { count: previousState.count + 1 }
+              return newState
             })
-        }, 1000);
-    };
+          }, 1000)
+        }
 
         static defaultProps = {
-            message: '기본값',
+          message: '기본값',
         }
-    };
+      }
 
-
-    function Component() {
+      function Component() {
         return (
-            <div>
-                <button onClick={() => {
-                    console.log('click');
-                    }}>클릭
-                </button>
-            </div>);
-    }
+          <div>
+            <button
+              onClick={() => {
+                console.log('click')
+              }}
+            >
+              클릭
+            </button>
+          </div>
+        )
+      }
 
-    class Component extends React.Component {
+      class Component extends React.Component {
         state = {
-            count: 0,
-        };
-
+          count: 0,
+        }
+        interval = null
         constructor(props) {
-            super(props);
+          super(props)
 
-            // 방법 1
-            this.click = this.click.bind(this); //click 메소드에 bind
+          // 방법 1
+          this.click = this.click.bind(this) //click 메소드에 bind
         }
         render() {
-            return (
+          return (
             <div>
-                <p>{this.state.count}</p>
-                <button onClick={this.click}>클릭</button>
-            </div>);
+              <p>{this.state.count}</p>
+              <button onClick={this.click}>클릭</button>
+            </div>
+          )
         }
 
-
         click() {
-            console.log('click');
-            this.setState((state) => ({
-                ... state, 
-                count: state.count + 1
-            }));
-                    
+          console.log('click')
+          this.setState((state) => ({
+            ...state,
+            count: state.count + 1,
+          }))
         }
 
         //방법 2. 화살표 함수는 바인딩 안해도 적용됨
         click = () => {
-
-            console.log('click');
-            this.setState((state) => ({
-                ... state, 
-                count: state.count + 1
-            }));
-                    
+          console.log('click')
+          this.setState((state) => ({
+            ...state,
+            count: state.count + 1,
+          }))
         }
-    }
-    ReactDOM.render(
-        <Component />,
-        document.querySelector('#root')
-        )
+      }
+      ReactDOM.render(<Component />, document.querySelector('#root'))
+
+      class App extends React.Component {
+        state = {
+          age: 39,
+        }
+
+        constructor(props) {
+          super(props)
+
+          console.log('constructor', props)
+        }
+        render() {
+          console.log('render')
+          return (
+            <div>
+              <h2>
+                Hello {this.props.name} - {this.state.age}{' '}
+              </h2>
+            </div>
+          )
+        }
+        // componentWillMount() {
+        //     console.log('componentWillMount')
+        // }
+        static getDerivedStateFromProps(nextProps, prevState) {
+          console.log('getDerivedStateFromProps', nextProps, prevState)
+
+          //props 를 받아 새로운 설정 가능
+          //render 실행 전 무조건 불림 age 390으로 고정됨
+          //특수한 경우 에만 사용
+          //시간의 흐름에 따라 변하는 props에 state 가 의존하는 경우
+          return {
+            age: 390,
+          }
+        }
+        componentDidMount() {
+          console.log('componentDidMount')
+
+          this.interval = setInterval(() => {
+            console.log('setInterval')
+            this.setState((state) => ({ ...state, age: state.age + 1 }))
+          }, 1000)
+        }
+        // componentWillReceivePros(nextProps) {
+        //     console.log('componentWillReceiveProps', nextProps)
+        // }
+
+        shouldComponentUpdate(nextProps, nextState) {
+          console.log('shouldComponentUpdate', nextProps, nextState)
+
+          return true // render 가 다시 되냐(true), 안 되냐 (false) 결정. 실제 값은 변경됨
+        }
+
+        // componentWillUpdate(nextProps, nextState) {
+        //     console.log('componentWillUpdate', nextProps, nextState)
+
+        // }
+
+        componentDidUpdate(prevProps, prevState) {
+          console.log('componentDidUpdate', prevProps, prevState)
+        }
+
+        componentWillUnmount() {
+          //setInterval 정리 필요
+          clearInterval(this.interval)
+        }
+      }
+
+      let i = 0
+
+      class App extends React.Component {
+        state = { list: [] }
+
+        render() {
+          return (
+            <div id="list" style={{ height: 100, overflow: 'scroll' }}>
+              {this.state.list.map((i) => {
+                return <div>{i}</div>
+              })}
+            </div>
+          )
+        }
+
+        componentDidMount() {
+          setInterval(() => {
+            this.setState((state) => ({
+              list: [...state.list, i++],
+            }))
+          }, 1000)
+        }
+
+        // 저장되는 스냅샷이 return
+        getSnapShotBeforeUpdate(prevProps, prevState) {
+          if (prevState.list.length === this.state.list.length) {
+            return null // 같다면 저장할 필요 없다
+          }
+
+          const list = document.querySelector('#list')
+          return list.scrollHeight - list.scrollTop
+        }
+
+        componentDidUpdate(prevProps, prevState, snapShot) {
+          console.log(snapShot)
+          if (snapShot === null) {
+            return
+          }
+
+          const list = document.querySelector('#list')
+          list.scrollTop = list.scrollHeight - snapShot
+        }
+      }
+
+      class App extends React.Component {
+        state = {
+            hasError: false
+        }
+        render() {
+            if(this.state.hasError) {
+                return <div>예상치 못한 에러가 발생했다.</div>
+            }
+
+            //WebService 컴포넌트를 감싸줌 (Error Boundaries)
+            //일반적으로 ErrorBoundaries 라이브러리 설치
+            //ErrorBoundaries를 부모로 만들고, 하위(우리의) 컴포넌트에서 에러 발생시 에러 페이지로 보여줌
+            return <WebService />;
+        }
+
+        //에러에 대한 정보
+        componentDidCatch(error, info) {
+            this.setState({hasError: true});
+        }
+      }
+
+      ReactDOM.render(<App name="Mark" />, document.querySelector('#root'))
     </script>
   </body>
 </html>
