@@ -48,75 +48,60 @@
 
 const http = require('http')
 
-//타입 정의
-/**
- * @typedef Post
- * @property {string} id
- * @property {string} title
- * @property {string} content
- */
-
-/** @type {Post} */
-const examplePost = {
-    id: 'abc',
-    title: 'abc',
-    content: 'abc',
-}
-
-/** @type {Post[]} */
-const posts = [
-    {
-        id: 'my_first_post',
-        title: 'My First Post',
-        content: 'Hello!',
-    },
-    {
-        id: 'my_second_post',
-        title: 'My Second Post',
-        content: 'Second Post!',
-    },
-]
-
-/**
- * Post
- *
- * Get /posts
- * Get /posts/:id
- * POST /posts
- */
-
+const { routes } = require('./api')
 
 const server = http.createServer((req, res) => {
-  const POST_ID_REGEX = /^\/posts\/([a-zA-z0-9-_]+)$/
-  //()는 추출
-  const postIdregexResult =
-    (req.url && POST_ID_REGEX.exec(req.url)) || undefined //왼쪽이 false면 오른쪽 값 됨
-  // 정규식이 맞았는데, 구체적으로 어떻게 맞았는지까지 반환
+  async function main() {
+    const route = routes.find(
+      (_route) =>
+        req.url &&
+        req.method &&
+        _route.url.test(req.url) &&
+        _route.method === req.method,
+    )
 
-  console.log(req.url)
-  if (req.url === '/posts' && req.method === 'GET') {
-    res.statusCode = 200
-    res.end('List of Posts.')
-  }
-  // 정규식. id에 어떤 값이 오더라도   /posts/[문자 여러개(+)]
-  // GET /posts/:id
-  else if (postIdregexResult /*req.url === '/posts/:id'*/) {
-    //.test() 정규식이 맞았는지 반환 (true/false)
- 
-    const postId = postIdregexResult[1]
-    console.log(postId)
-    res.statusCode = 200
-    res.end('Reading a Post.')
-  } else if (req.url === '/posts' && req.method === 'POST') {
-    res.statusCode = 200
-    res.end('Creating post.')
-  } else {
-    res.statusCode = 404
-    res.end('Not Found.')
+    if (!req.url || !route) {
+      res.statusCode = 404
+      res.end('NOT FOUND')
+      return
+    }
+
+    const regexResult = route.url.exec(req.url)
+
+    if (!regexResult) {
+      res.statusCode = 404
+      res.end('NOT FOUND')
+      return
+    }
+
+    //headers가 application/json 일 때(&&) 값 반환, 아니면 undefined (|| undefined)
+    /**@type {Object.<string, *> | undefined} */
+    const reqBody =
+      (req.headers['content-type'] === 'application/json' &&
+        (await new Promise((resolve) => {
+          req.setEncoding('utf-8')
+          req.on('data', (data) => {
+            try {
+              resolve(JSON.parse(data))
+            } catch {
+              throw new Error('Ill-formed json')
+            }
+          })
+        }))) ||
+      undefined
+
+    const result = await route.callback(regexResult, reqBody)
+    res.statusCode = result.statusCode
+
+    if (typeof result.body === 'string') {
+      res.end(result.body)
+    } else {
+      res.setHeader('Content-Type', 'application/json; charset=utf-8')
+      res.end(JSON.stringify(result.body))
+    }
   }
 
-  res.statusCode = 200
-  res.end('Hello!')
+  main()
 })
 
 const PORT = 4000
