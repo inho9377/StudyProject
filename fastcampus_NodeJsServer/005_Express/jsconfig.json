@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "lib": ["ES2019", "ES2021", "ESNext"],
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

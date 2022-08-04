@@ -1,0 +1,13 @@
+html
+    head 
+        link(rel="stylesheet" href="/index.css")
+    body 
+        h1 user Profile page 
+        h2.gold Nickname 
+        div.green.big= nickname
+
+        h2 Profile 
+        form(action=`/user/${userId}/profile` method="post" enctype="multipart/form-data")
+            input(type="file" name="profile")
+            button Upload Profile Picture
+        //- 전송될 때 어떤 url 로 보낼지
