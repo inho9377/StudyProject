@@ -64,7 +64,7 @@ async function getCachedImageOrSearchedImage(query) {
 
   return {
     message: `Returning new image: ${query}, width: ${size.width}, height: ${size.height}`,
-    stream: fs.createReadStream(imageFilePath),
+    stream: fs.createReadStream(imageFilePath), // 한 번 끝까지 읽은 스트림은 다시 쓸 수 없으므로 새로 만들어야 함
   }
 }
 
@@ -107,7 +107,7 @@ const server = http.createServer((req, res) => {
       const { stream } = await getCachedImageOrSearchedImage(query)
       await promisify(pipeline)(
         stream,
-        sharp()
+        sharp() //stream에 나온 결과를 resize
           .resize(width, height, {
             fit: 'contain',
             background: '#ffffff',
