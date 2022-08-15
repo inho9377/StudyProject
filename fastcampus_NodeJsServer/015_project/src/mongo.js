@@ -25,6 +25,10 @@ async function getCollection(name) {
   
 }
 
+// 1. GSUite
+// 2. 슬랙
+// 3. domain to AWS
+
 async function getUsersCollection() {
   return getCollection('users')
 }
