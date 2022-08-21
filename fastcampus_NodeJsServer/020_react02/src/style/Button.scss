@@ -1,0 +1,17 @@
+button {
+    background: white;
+    color: green;
+    span {
+        text-align: right;
+    }
+    // 버튼 안의 모든 span 태그 button span
+
+    & > span { // button > span
+        text-align: right;
+    }
+    &.blue { // button.blue button 태그 중 blue클래스
+        color: blue 
+    }
+}
+
+
