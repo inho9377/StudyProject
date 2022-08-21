@@ -1,30 +1,27 @@
 import './App.css'
-import { useState, useRef } from 'react'
+import Profile from './Profile'
+import Board from './Board'
+import React from 'react'
+import { Routes } from 'react-router-dom'
 
 function App() {
-  const [tasks, setTask] = useState([{
-    id: 0,
-    text: '강의 듣기'
-  }])
-  const inputRef = useRef()
-
-  const confirm = () => {
-    const text = inputRef.current.value
-    setTask([...tasks, {
-      id: tasks[tasks.length-1].id + 1, // 마지막 인덱스의 id + 1
-      text
-    }])
-  }
-
   return (
     <div className="App">
-      <div>
-        <input placeholder="내 목표" ref={inputRef}></input>
-        <button onClick={confirm}>확인</button>
-      </div>
-      <ul>
-        {tasks.map(v => <li key={v.id}>{v.text}</li>)}
-      </ul>
+      <nav>
+        <ul>
+          <li>
+            <a href="/">프로필</a>
+          </li>
+          <li>
+            <a href="profile">프로필</a>
+          </li>
+          <li>
+            <a href="board">게시판</a>
+          </li>
+        </ul>
+      </nav>
+      <Routes path='/profile' component={Profile} />
+      <Routes path='/board' component={Board} />
     </div>
   )
 }
