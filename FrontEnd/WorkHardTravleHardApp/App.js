@@ -38,14 +38,23 @@ export default function App() {
   }
 
   const onChangeText = (payload) => setText(payload)
+
   const save = async (toSave, key) => {
     const s = JSON.stringify(toSave)
     try {
       await AsyncStorage.setItem(key, s)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
+
+  const completeToDo = async (key) => {
+    const newToDos = { ...toDos }
+    newToDos[key].complete = true
+    setToDos(newToDos)
+    save(newToDos, STORAGE_KEY_TODOS)
+  }
+
   const deleteToDo = async (key) => {
     if (Platform.OS === 'web') {
       const ok = confirm('Do you want to delete this To Do?')
@@ -71,11 +80,19 @@ export default function App() {
       ])
     }
   }
+
   const load = async (key) => {
-    const s = await AsyncStorage.getItem(key)
+    let s = null
+    try {
+      s = await AsyncStorage.getItem(key)
+    } catch (e) {
+      console.error(e)
+    }
+
     if (!s) {
       return
     }
+
     if (key === STORAGE_KEY_TAB) {
       setWorking(JSON.parse(s).working)
     } else if (key === STORAGE_KEY_TODOS) {
@@ -91,13 +108,15 @@ export default function App() {
     //   [Date.now()]: { text, work: working },
     // })
 
-    const newToDos = { ...toDos, [Date.now()]: { text, working } }
+    const newToDos = {
+      ...toDos,
+      [Date.now()]: { text, working, complete: false },
+    }
 
     setToDos(newToDos)
     await save(newToDos, STORAGE_KEY_TODOS)
     setText('')
   }
-  console.log(toDos)
 
   return (
     <View style={styles.container}>
@@ -142,10 +161,38 @@ export default function App() {
         {Object.keys(toDos).map((key) =>
           toDos[key].working === working ? (
             <View style={styles.toDo} key={key}>
-              <Text style={styles.toDoText}>{toDos[key].text}</Text>
-              <TouchableOpacity onPress={() => deleteToDo(key)}>
-                <Fontisto name="trash" size={18} color="black" />
-              </TouchableOpacity>
+              <Text
+                style={
+                  toDos[key].complete === true
+                    ? styles.toDoTextComplete
+                    : styles.toDoText
+                }
+              >
+                {toDos[key].text}
+              </Text>
+              {toDos[key].complete === true ? null : (
+                <View
+                  style={{
+                    display: 'flex',
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <TouchableOpacity
+                    style={styles.toDoIcon}
+                    onPress={() => completeToDo(key)}
+                  >
+                    <Fontisto name="check" size={18} color="black" />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.toDoIcon}
+                    onPress={() => deleteToDo(key)}
+                  >
+                    <Fontisto name="trash" size={18} color="black" />
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           ) : null,
         )}
@@ -187,9 +234,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  toDoTest: {
+  toDoText: {
     color: 'white',
     fontSize: 16,
     fontWeight: '500',
+    flex: 3,
+  },
+  toDoTextComplete: {
+    color: 'black',
+    fontSize: 16,
+    fontWeight: '500',
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid',
+  },
+  toDoIcon: {
+    flex: 1,
   },
 })
