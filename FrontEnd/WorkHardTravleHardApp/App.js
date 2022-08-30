@@ -10,12 +10,15 @@ import {
   Pressable,
   TextInput,
   ScrollView,
+  Alert,
+  Platform,
 } from 'react-native'
+import { Fontisto } from '@expo/vector-icons'
 import { theme } from './colors'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const STORAGE_KEY="@toDos"
-
+const STORAGE_KEY_TODOS = '@toDos'
+const STORAGE_KEY_TAB = '@tab'
 
 export default function App() {
   const [working, setWorking] = useState(true)
@@ -23,19 +26,61 @@ export default function App() {
   const [toDos, setToDos] = useState({})
 
   useEffect(() => {
-    loadToDos()
+    load(STORAGE_KEY_TODOS)
+    load(STORAGE_KEY_TAB)
   }, [])
 
-  const travel = () => setWorking(false)
-  const work = () => setWorking(true)
-  const onChangeText = (payload) => setText(payload)
-  const saveToDos = async (toSave) => {
-    const s = JSON.stringify(toSave)
-    await AsyncStorage.setItem(STORAGE_KEY, s)
+  const travel = () => saveAndSetWorking(false)
+  const work = () => saveAndSetWorking(true)
+  const saveAndSetWorking = (working) => {
+    setWorking(working)
+    save({ working }, STORAGE_KEY_TAB)
   }
-  const loadToDos = async() => {
-    const s = await AsyncStorage.getItem(STORAGE_KEY)
-    setToDos(JSON.parse(s)) // string to Object
+
+  const onChangeText = (payload) => setText(payload)
+  const save = async (toSave, key) => {
+    const s = JSON.stringify(toSave)
+    try {
+      await AsyncStorage.setItem(key, s)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  const deleteToDo = async (key) => {
+    if (Platform.OS === 'web') {
+      const ok = confirm('Do you want to delete this To Do?')
+      if (ok) {
+        const newToDos = { ...toDos }
+        delete newToDos[key]
+        setToDos(newToDos) // state 는 직접 mutate 되면 안됨
+        save(newToDos, STORAGE_KEY_TODOS)
+      }
+    } else {
+      Alert.alert('Delete To Do?', 'Are you sure?', [
+        { text: 'Cancel' },
+        {
+          text: "I'm sure",
+          style: 'destructive',
+          onPress: () => {
+            const newToDos = { ...toDos }
+            delete newToDos[key]
+            setToDos(newToDos) // state 는 직접 mutate 되면 안됨
+            save(newToDos, STORAGE_KEY_TODOS)
+          },
+        },
+      ])
+    }
+  }
+  const load = async (key) => {
+    const s = await AsyncStorage.getItem(key)
+    if (!s) {
+      return
+    }
+    if (key === STORAGE_KEY_TAB) {
+      setWorking(JSON.parse(s).working)
+    } else if (key === STORAGE_KEY_TODOS) {
+      setToDos(JSON.parse(s)) // string to Object
+    }
   }
   const addToDo = async () => {
     if (text === '') {
@@ -49,7 +94,7 @@ export default function App() {
     const newToDos = { ...toDos, [Date.now()]: { text, working } }
 
     setToDos(newToDos)
-    await saveToDos(newToDos)
+    await save(newToDos, STORAGE_KEY_TODOS)
     setText('')
   }
   console.log(toDos)
@@ -67,7 +112,7 @@ export default function App() {
         </TouchableOpacity>
         <Pressable
           onPress={() => {
-            travel
+            travel()
           }}
         >
           <Text
@@ -97,9 +142,12 @@ export default function App() {
         {Object.keys(toDos).map((key) =>
           toDos[key].working === working ? (
             <View style={styles.toDo} key={key}>
-              <Text style={styles.toDoText}>{x[key].text}</Text>
+              <Text style={styles.toDoText}>{toDos[key].text}</Text>
+              <TouchableOpacity onPress={() => deleteToDo(key)}>
+                <Fontisto name="trash" size={18} color="black" />
+              </TouchableOpacity>
             </View>
-          ) : null
+          ) : null,
         )}
       </ScrollView>
     </View>
@@ -135,6 +183,9 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 20,
     borderRadius: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   toDoTest: {
     color: 'white',
