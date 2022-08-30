@@ -24,6 +24,7 @@ export default function App() {
   const [working, setWorking] = useState(true)
   const [text, setText] = useState('')
   const [toDos, setToDos] = useState({})
+  const [editText, setEditText] = useState('')
 
   useEffect(() => {
     load(STORAGE_KEY_TODOS)
@@ -38,6 +39,7 @@ export default function App() {
   }
 
   const onChangeText = (payload) => setText(payload)
+  const onChangeEditText = (payload) => setEditText(payload)
 
   const save = async (toSave, key) => {
     const s = JSON.stringify(toSave)
@@ -52,7 +54,15 @@ export default function App() {
     const newToDos = { ...toDos }
     newToDos[key].complete = true
     setToDos(newToDos)
-    save(newToDos, STORAGE_KEY_TODOS)
+    await save(newToDos, STORAGE_KEY_TODOS)
+  }
+
+  const editToDo = async (key) => {
+    const newToDos = { ...toDos }
+    newToDos[key].edit = true
+    setToDos(newToDos)
+    setEditText(toDos[key].text)
+    await save(newToDos, STORAGE_KEY_TODOS)
   }
 
   const deleteToDo = async (key) => {
@@ -81,6 +91,14 @@ export default function App() {
     }
   }
 
+  const editEnd = async (key) => {
+    const newToDos = { ...toDos }
+    newToDos[key].edit = false
+    newToDos[key].text = editText
+    setToDos(newToDos)
+    await save(newToDos, STORAGE_KEY_TODOS)
+  }
+
   const load = async (key) => {
     let s = null
     try {
@@ -99,6 +117,7 @@ export default function App() {
       setToDos(JSON.parse(s)) // string to Object
     }
   }
+
   const addToDo = async () => {
     if (text === '') {
       return
@@ -110,7 +129,7 @@ export default function App() {
 
     const newToDos = {
       ...toDos,
-      [Date.now()]: { text, working, complete: false },
+      [Date.now()]: { text, working, complete: false, edit: false },
     }
 
     setToDos(newToDos)
@@ -159,7 +178,22 @@ export default function App() {
       />
       <ScrollView>
         {Object.keys(toDos).map((key) =>
-          toDos[key].working === working ? (
+          toDos[key].edit === true ? (
+            <View style={styles.toDo} key={key}>
+              <TextInput
+                returnKeyType="done"
+                onChangeText={onChangeEditText}
+                value={editText}
+                style={styles.input}
+              />
+              <TouchableOpacity
+                style={styles.toDoIcon}
+                onPress={() => editEnd(key)}
+              >
+                <Fontisto name="check" size={18} color="white" />
+              </TouchableOpacity>
+            </View>
+          ) : toDos[key].working === working ? (
             <View style={styles.toDo} key={key}>
               <Text
                 style={
@@ -179,6 +213,12 @@ export default function App() {
                     justifyContent: 'space-between',
                   }}
                 >
+                  <TouchableOpacity
+                    style={styles.toDoIcon}
+                    onPress={() => editToDo(key)}
+                  >
+                    <Fontisto name="eraser" size={18} color="black" />
+                  </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.toDoIcon}
                     onPress={() => completeToDo(key)}
@@ -238,7 +278,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: '500',
-    flex: 3,
+    flex: 2,
   },
   toDoTextComplete: {
     color: 'black',
